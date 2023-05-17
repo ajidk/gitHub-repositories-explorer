@@ -123,7 +123,7 @@ export default function SimpleAccordion() {
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
                   id="panel1a-header"
-                  onClick={() => getData(item.repos_url)}
+                  onClick={() => getData(item.repos_url, setDetail)}
                 >
                   <Typography>{item.login}</Typography>
                 </AccordionSummary>
