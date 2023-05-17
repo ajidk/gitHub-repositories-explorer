@@ -6,33 +6,33 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./App.css";
 import { Box, Button, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SimpleAccordion() {
-  const token = "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";
+  const token = "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";
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<any>([]);
 
-  axios
-    .get("https://api.github.com/search/users?q=ajidk", {
-      headers: {
-        Accept: "application/vnd.github+json",
-        Authorization: `Bearer ${token}`,
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    })
-    .then((response: any) => {
-      // handle success
-      console.log(response);
-      setUser(response)
-    })
-    .catch((error) => {
-      // handle error
-      console.log(error);
-    })
-    .finally(() => {
-      // always executed
-    });
+  useEffect(() => {
+    axios
+      .get("https://api.github.com/users", {
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${token}`,
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+
+        setUser(response);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+      });
+  }, []);
+
   return (
     <Box maxWidth="sm" mx={"auto"}>
       <TextField
@@ -45,22 +45,28 @@ export default function SimpleAccordion() {
       <Button fullWidth variant="contained" sx={{ marginBottom: 2 }}>
         Contained
       </Button>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>Accordion 1</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
+      {user?.data?.map((item: any, idx: number) => {
+        return (
+          <Accordion key={idx}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>{item.login}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
+                eget. */}
+                {item.repos_url}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
@@ -74,7 +80,7 @@ export default function SimpleAccordion() {
             malesuada lacus ex, sit amet blandit leo lobortis eget.
           </Typography>
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
     </Box>
   );
 }
