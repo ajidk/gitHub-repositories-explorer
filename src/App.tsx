@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 
 export default function SimpleAccordion() {
   const token =
-    "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adk";
+    "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";
 
   const [user, setUser] = useState<any>([]);
   const [erro, setErro] = useState<any>();
